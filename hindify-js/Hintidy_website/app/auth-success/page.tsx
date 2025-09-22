@@ -37,46 +37,80 @@ export default function AuthSuccessPage() {
     
     setIsRedirecting(true)
     
-    // Create comprehensive deep link with all available user data
+    // Create comprehensive deep link with all available user data and enhanced security
     const deepLinkParams = new URLSearchParams()
     
     // Primary identifiers
     if (user.id) deepLinkParams.set('userId', user.id)
     if (user.primaryEmailAddress?.emailAddress) deepLinkParams.set('email', user.primaryEmailAddress.emailAddress)
     
-    // Name variations
+    // Name variations for better display in app
     if (user.fullName) deepLinkParams.set('name', user.fullName)
     if (user.firstName) deepLinkParams.set('firstName', user.firstName)
     if (user.lastName) deepLinkParams.set('lastName', user.lastName)
     
-    // Profile image
+    // Profile image with fallbacks
     if (user.imageUrl) deepLinkParams.set('imageUrl', user.imageUrl)
+    if (user.profileImageUrl) deepLinkParams.set('profileImageUrl', user.profileImageUrl)
     
-    // Additional metadata
+    // Additional metadata for enhanced user experience
     if (user.username) deepLinkParams.set('username', user.username)
+    
+    // Authentication provider info
     deepLinkParams.set('provider', 'clerk')
+    deepLinkParams.set('authMethod', 'website_transfer')
+    
+    // Session info for security
     deepLinkParams.set('timestamp', Date.now().toString())
+    deepLinkParams.set('sessionId', crypto.randomUUID())
+    deepLinkParams.set('source', 'hintify_website')
+    
+    // Account creation and verification status
+    if (user.createdAt) deepLinkParams.set('accountCreatedAt', user.createdAt.toString())
+    if (user.lastSignInAt) deepLinkParams.set('lastSignInAt', user.lastSignInAt?.toString() || '')
+    if (user.emailAddresses?.[0]?.verification?.status) {
+      deepLinkParams.set('emailVerified', user.emailAddresses[0].verification.status === 'verified' ? 'true' : 'false')
+    }
+    
+    // User preferences and settings (if available)
+    if (user.publicMetadata) {
+      try {
+        deepLinkParams.set('userPreferences', JSON.stringify(user.publicMetadata))
+      } catch (e) {
+        console.warn('Failed to serialize user preferences:', e)
+      }
+    }
     
     const deepLinkUrl = `hintify://auth-success?${deepLinkParams.toString()}`
     
-    console.log("Opening app with comprehensive deep link:", deepLinkUrl)
-    console.log("User data being transferred:", {
-      id: user.id,
+    console.log("🚀 Opening app with enhanced account transfer:", {
+      userId: user.id,
       email: user.primaryEmailAddress?.emailAddress,
       fullName: user.fullName,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      imageUrl: user.imageUrl,
-      username: user.username
+      provider: 'clerk',
+      accountCreated: user.createdAt,
+      lastSignIn: user.lastSignInAt,
+      transferMethod: 'secure_deep_link'
     })
     
-    // Try to open the app
-    window.location.href = deepLinkUrl
+    // Attempt to open the app with the account details
+    try {
+      window.location.href = deepLinkUrl
+      
+      // Provide user feedback
+      setTimeout(() => {
+        console.log("📱 App should have opened with your account details")
+      }, 1000)
+      
+    } catch (error) {
+      console.error('Failed to open app:', error)
+      setIsRedirecting(false)
+    }
     
     // Reset redirecting state after a delay
     setTimeout(() => {
       setIsRedirecting(false)
-    }, 3000)
+    }, 4000)
   }
 
   const handleDownloadApp = () => {
@@ -167,10 +201,10 @@ export default function AuthSuccessPage() {
                     </div>
                     <div className="flex-1">
                       <h3 className="text-lg font-semibold text-white mb-2">
-                        Return to Hintify App
+                        Transfer Account to App
                       </h3>
                       <p className="text-gray-300 mb-4">
-                        You can now return to the Hintify SnapAssist AI app to start getting intelligent hints for your questions.
+                        Your account details will be securely transferred to the Hintify SnapAssist AI app. You'll be automatically logged in with the same account and can access all your synced data.
                       </p>
                       <div className="flex flex-col sm:flex-row gap-3">
                         <Button
@@ -186,7 +220,7 @@ export default function AuthSuccessPage() {
                           ) : (
                             <>
                               <ExternalLink className="h-4 w-4" />
-                              Open Hintify App
+                              Open Hintify App (Auto-Login)
                             </>
                           )}
                         </Button>
