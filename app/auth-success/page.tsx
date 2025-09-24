@@ -25,25 +25,38 @@ export default function AuthSuccessPage() {
   }, [isFromApp, router])
 
   const handleOpenApp = async () => {
-    if (!session?.access_token) {
-      console.error('No access token available')
+    if (!session?.access_token || !user) {
+      console.error('No access token or user data available')
       return
     }
 
     try {
       setDeepLinkAttempted(true)
 
-      // Create deep link URL with authentication tokens
-      const deepLinkUrl = new URL('hintify://auth')
-      deepLinkUrl.searchParams.set('access_token', session.access_token)
-      deepLinkUrl.searchParams.set('refresh_token', session.refresh_token || '')
-      deepLinkUrl.searchParams.set('expires_in', String(session.expires_in || 3600))
-      deepLinkUrl.searchParams.set('token_type', 'bearer')
+      // Create user data object
+      const userData = {
+        id: user.id,
+        email: user.email,
+        name: user.user_metadata?.full_name || user.user_metadata?.name,
+        firstName: user.user_metadata?.given_name,
+        lastName: user.user_metadata?.family_name,
+        avatar: user.user_metadata?.avatar_url || user.user_metadata?.picture
+      }
 
-      console.log('Opening deep link:', deepLinkUrl.toString())
+      // Create deep link URL with authentication tokens and user data (consistent with sign-in page)
+      const token = session.access_token
+      const refreshToken = session.refresh_token
+      const deepLinkUrl = `hintify://auth?token=${encodeURIComponent(token)}&refresh_token=${encodeURIComponent(refreshToken || '')}&user=${encodeURIComponent(JSON.stringify(userData))}`
+
+      console.log('🔗 Opening deep link with tokens and user data:', {
+        hasToken: !!token,
+        hasRefreshToken: !!refreshToken,
+        hasUserData: !!userData.id,
+        userEmail: userData.email
+      })
 
       // Attempt to open the deep link
-      window.location.href = deepLinkUrl.toString()
+      window.location.href = deepLinkUrl
 
       // Show success message after a delay
       setTimeout(() => {
@@ -51,7 +64,7 @@ export default function AuthSuccessPage() {
       }, 3000)
 
     } catch (error) {
-      console.error('Error opening app:', error)
+      console.error('❌ Error opening app:', error)
       setDeepLinkAttempted(false)
     }
   }
@@ -125,18 +138,32 @@ export default function AuthSuccessPage() {
           <Button
             onClick={handleOpenApp}
             disabled={deepLinkAttempted}
-            className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3"
+            className="group relative w-full overflow-hidden bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 text-white font-bold py-4 px-6 text-lg shadow-2xl border-0 transition-all duration-300 hover:shadow-purple-500/25 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100"
           >
-            {deepLinkAttempted ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Opening App...
-              </>
-            ) : (
-              <>
-                <ExternalLink className="mr-2 h-4 w-4" />
-                Open Hintify App
-              </>
+            {/* Glass morphism overlay */}
+            <div className="absolute inset-0 bg-white/10 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+            {/* Animated gradient border */}
+            <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 opacity-0 group-hover:opacity-20 blur-sm transition-opacity duration-300" />
+
+            {/* Content */}
+            <div className="relative flex items-center justify-center">
+              {deepLinkAttempted ? (
+                <>
+                  <Loader2 className="mr-3 h-6 w-6 animate-spin" />
+                  <span className="font-extrabold tracking-wide">Opening App...</span>
+                </>
+              ) : (
+                <>
+                  <ExternalLink className="mr-3 h-6 w-6 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" />
+                  <span className="font-extrabold tracking-wide">Open Hintify App</span>
+                </>
+              )}
+            </div>
+
+            {/* Shine effect - only when not disabled */}
+            {!deepLinkAttempted && (
+              <div className="absolute inset-0 -top-2 -bottom-2 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out" />
             )}
           </Button>
 

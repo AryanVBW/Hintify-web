@@ -199,10 +199,22 @@ export default function SignInPage() {
             </div>
             <Button
               onClick={handleOpenApp}
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 text-lg"
+              className="group relative w-full overflow-hidden bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 text-white font-bold py-4 px-6 text-lg shadow-2xl border-0 transition-all duration-300 hover:shadow-purple-500/25 hover:scale-[1.02] active:scale-[0.98]"
             >
-              <ExternalLink className="mr-2 h-5 w-5" />
-              Open Hintify App
+              {/* Glass morphism overlay */}
+              <div className="absolute inset-0 bg-white/10 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+              {/* Animated gradient border */}
+              <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 opacity-0 group-hover:opacity-20 blur-sm transition-opacity duration-300" />
+
+              {/* Content */}
+              <div className="relative flex items-center justify-center">
+                <ExternalLink className="mr-3 h-6 w-6 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" />
+                <span className="font-extrabold tracking-wide">Open Hintify App</span>
+              </div>
+
+              {/* Shine effect */}
+              <div className="absolute inset-0 -top-2 -bottom-2 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out" />
             </Button>
             <Button
               onClick={() => setShowAlreadySignedIn(false)}
