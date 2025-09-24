@@ -8,9 +8,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Loader2, Mail, Globe } from 'lucide-react'
+import { Loader2, Mail, Globe, ExternalLink, CheckCircle } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Hyperspeed from '@/components/Hyperspeed'
+import { useAuth } from '@/components/auth/AuthProvider'
 
 export default function SignInPage() {
   const [loading, setLoading] = useState(false)
@@ -19,16 +20,57 @@ export default function SignInPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  
+  const [showAlreadySignedIn, setShowAlreadySignedIn] = useState(false)
+
   const router = useRouter()
   const searchParams = useSearchParams()
   const fromApp = searchParams.get('source') === 'app'
+  const { user, session, loading: authLoading } = useAuth()
+
+  // Smart redirect logic for already authenticated users
+  useEffect(() => {
+    if (!authLoading && user && session) {
+      if (fromApp) {
+        // User is already signed in and came from app - show "Open App" option
+        setShowAlreadySignedIn(true)
+      } else {
+        // User is already signed in and came from web - redirect to dashboard
+        router.push('/')
+      }
+    }
+  }, [user, session, authLoading, fromApp, router])
 
   useEffect(() => {
     // Clear any previous errors when component mounts
     setError(null)
     setSuccess(null)
   }, [])
+
+  const handleOpenApp = () => {
+    try {
+      // Create deep link with user session data
+      const token = session?.access_token
+      const refreshToken = session?.refresh_token
+      const userData = {
+        id: user?.id,
+        email: user?.email,
+        name: user?.user_metadata?.full_name || user?.user_metadata?.name,
+        firstName: user?.user_metadata?.given_name,
+        lastName: user?.user_metadata?.family_name,
+        avatar: user?.user_metadata?.avatar_url || user?.user_metadata?.picture
+      }
+
+      const deepLinkUrl = `hintify://auth?token=${encodeURIComponent(token || '')}&refresh_token=${encodeURIComponent(refreshToken || '')}&user=${encodeURIComponent(JSON.stringify(userData))}`
+
+      console.log('🔗 Opening app with deep link...')
+      window.location.href = deepLinkUrl
+
+      setSuccess('Opening Hintify app...')
+    } catch (error) {
+      console.error('❌ Failed to open app:', error)
+      setError('Failed to open the desktop app. Please make sure Hintify is installed.')
+    }
+  }
 
   const handleGoogleSignIn = async () => {
     try {
@@ -106,28 +148,97 @@ export default function SignInPage() {
     }
   }
 
+  // Show loading state while checking authentication
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-gray-950 relative overflow-hidden flex items-center justify-center p-4">
+        <div className="absolute inset-0 z-0">
+          <Hyperspeed />
+        </div>
+        <Card className="w-full max-w-md relative z-10 backdrop-blur-xl bg-black/30 border-white/10 shadow-2xl">
+          <CardContent className="flex items-center justify-center py-8">
+            <Loader2 className="h-8 w-8 animate-spin text-white" />
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
+  // Show "Open App" interface for already signed-in users from app
+  if (showAlreadySignedIn && user) {
+    return (
+      <div className="min-h-screen bg-gray-950 relative overflow-hidden flex items-center justify-center p-4">
+        <div className="absolute inset-0 z-0">
+          <Hyperspeed />
+        </div>
+        <Card className="w-full max-w-md relative z-10 backdrop-blur-xl bg-black/30 border-white/10 shadow-2xl">
+          <CardHeader className="text-center">
+            <div className="mx-auto mb-4">
+              <CheckCircle className="h-16 w-16 text-green-400" />
+            </div>
+            <CardTitle className="text-2xl font-bold text-white">
+              Welcome back!
+            </CardTitle>
+            <CardDescription className="text-gray-300">
+              You're already signed in as {user.user_metadata?.full_name || user.email}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {error && (
+              <Alert variant="destructive" className="bg-red-900/50 border-red-500/50 text-red-200">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+            {success && (
+              <Alert className="bg-green-900/50 border-green-500/50 text-green-200">
+                <AlertDescription>{success}</AlertDescription>
+              </Alert>
+            )}
+            <div className="text-center text-gray-300 mb-4">
+              <p>Click below to open the Hintify desktop app</p>
+            </div>
+            <Button
+              onClick={handleOpenApp}
+              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 text-lg"
+            >
+              <ExternalLink className="mr-2 h-5 w-5" />
+              Open Hintify App
+            </Button>
+            <Button
+              onClick={() => setShowAlreadySignedIn(false)}
+              variant="ghost"
+              className="w-full text-gray-400 hover:text-white hover:bg-white/10"
+            >
+              Sign in with different account
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
   return (
-    <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-950 relative overflow-hidden flex items-center justify-center p-4">
       {/* Hyperspeed Background */}
       <div className="absolute inset-0 z-0">
         <Hyperspeed />
       </div>
 
-      {/* Glass Morphism Card */}
-      <Card className="w-full max-w-md relative z-10 backdrop-blur-xl bg-black/20 border-white/20 shadow-2xl">
+      {/* Enhanced Glass Morphism Card with Dark Theme */}
+      <Card className="w-full max-w-md relative z-10 backdrop-blur-xl bg-black/30 border-white/10 shadow-2xl">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold text-white">
+          <CardTitle className="text-3xl font-bold text-white mb-2">
             {fromApp ? 'Sign in to Hintify' : 'Welcome to Hintify'}
           </CardTitle>
-          <CardDescription className="text-gray-300">
+          <CardDescription className="text-gray-300 text-lg">
             {fromApp
-              ? 'Sign in to continue using the desktop app'
-              : 'Choose your preferred sign-in method'
+              ? 'Continue to your desktop app'
+              : 'Choose your sign-in method'
             }
           </CardDescription>
         </CardHeader>
         
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6">
           {error && (
             <Alert variant="destructive" className="bg-red-900/50 border-red-500/50 text-red-200">
               <AlertDescription>{error}</AlertDescription>
@@ -140,57 +251,67 @@ export default function SignInPage() {
             </Alert>
           )}
 
-          {/* Google Sign In Button */}
+          {/* Primary Google Sign In Button - More Prominent */}
           <Button
             onClick={handleGoogleSignIn}
             disabled={loading}
-            className="w-full bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-sm"
-            variant="outline"
+            className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-4 text-lg shadow-lg border-0"
+            size="lg"
           >
             {loading ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <Loader2 className="mr-3 h-5 w-5 animate-spin" />
             ) : (
-              <Globe className="mr-2 h-4 w-4" />
+              <Globe className="mr-3 h-5 w-5" />
             )}
             Continue with Google
           </Button>
 
-          <div className="relative">
+          <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t border-white/20" />
             </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-black/20 px-2 text-gray-400 backdrop-blur-sm">
+            <div className="relative flex justify-center text-sm">
+              <span className="bg-gray-950/80 px-4 text-gray-400 backdrop-blur-sm">
                 Or continue with email
               </span>
             </div>
           </div>
 
-          {/* Email Sign In/Up Tabs */}
+          {/* Simplified Email Sign In/Up Tabs */}
           <Tabs defaultValue="signin" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 bg-white/10 backdrop-blur-sm">
-              <TabsTrigger value="signin" className="text-white data-[state=active]:bg-white/20 data-[state=active]:text-white">Sign In</TabsTrigger>
-              <TabsTrigger value="signup" className="text-white data-[state=active]:bg-white/20 data-[state=active]:text-white">Sign Up</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 bg-white/5 backdrop-blur-sm border border-white/10">
+              <TabsTrigger
+                value="signin"
+                className="text-gray-300 data-[state=active]:bg-white/15 data-[state=active]:text-white data-[state=active]:shadow-sm font-medium"
+              >
+                Sign In
+              </TabsTrigger>
+              <TabsTrigger
+                value="signup"
+                className="text-gray-300 data-[state=active]:bg-white/15 data-[state=active]:text-white data-[state=active]:shadow-sm font-medium"
+              >
+                Sign Up
+              </TabsTrigger>
             </TabsList>
             
-            <TabsContent value="signin" className="space-y-4">
-              <form onSubmit={handleEmailSignIn} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="signin-email" className="text-white">Email</Label>
+            <TabsContent value="signin" className="space-y-5 mt-6">
+              <form onSubmit={handleEmailSignIn} className="space-y-5">
+                <div className="space-y-3">
+                  <Label htmlFor="signin-email" className="text-white font-medium">Email Address</Label>
                   <Input
                     id="signin-email"
                     type="email"
-                    placeholder="Enter your email"
+                    placeholder="Enter your email address"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     disabled={loading}
                     required
-                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 backdrop-blur-sm focus:bg-white/20 focus:border-white/40"
+                    className="bg-white/5 border-white/20 text-white placeholder:text-gray-500 backdrop-blur-sm focus:bg-white/10 focus:border-white/40 focus:ring-2 focus:ring-blue-500/50 h-12 text-base"
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="signin-password" className="text-white">Password</Label>
+                <div className="space-y-3">
+                  <Label htmlFor="signin-password" className="text-white font-medium">Password</Label>
                   <Input
                     id="signin-password"
                     type="password"
@@ -199,39 +320,44 @@ export default function SignInPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     disabled={loading}
                     required
-                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 backdrop-blur-sm focus:bg-white/20 focus:border-white/40"
+                    className="bg-white/5 border-white/20 text-white placeholder:text-gray-500 backdrop-blur-sm focus:bg-white/10 focus:border-white/40 focus:ring-2 focus:ring-blue-500/50 h-12 text-base"
                   />
                 </div>
 
-                <Button type="submit" className="w-full bg-blue-600/80 hover:bg-blue-600 text-white backdrop-blur-sm" disabled={loading}>
+                <Button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold py-3 text-base shadow-lg border-0"
+                  disabled={loading}
+                  size="lg"
+                >
                   {loading ? (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                   ) : (
-                    <Mail className="mr-2 h-4 w-4" />
+                    <Mail className="mr-2 h-5 w-5" />
                   )}
                   Sign In with Email
                 </Button>
               </form>
             </TabsContent>
             
-            <TabsContent value="signup" className="space-y-4">
-              <form onSubmit={handleEmailSignUp} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="signup-email" className="text-white">Email</Label>
+            <TabsContent value="signup" className="space-y-5 mt-6">
+              <form onSubmit={handleEmailSignUp} className="space-y-5">
+                <div className="space-y-3">
+                  <Label htmlFor="signup-email" className="text-white font-medium">Email Address</Label>
                   <Input
                     id="signup-email"
                     type="email"
-                    placeholder="Enter your email"
+                    placeholder="Enter your email address"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     disabled={loading}
                     required
-                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 backdrop-blur-sm focus:bg-white/20 focus:border-white/40"
+                    className="bg-white/5 border-white/20 text-white placeholder:text-gray-500 backdrop-blur-sm focus:bg-white/10 focus:border-white/40 focus:ring-2 focus:ring-purple-500/50 h-12 text-base"
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="signup-password" className="text-white">Password</Label>
+                <div className="space-y-3">
+                  <Label htmlFor="signup-password" className="text-white font-medium">Password</Label>
                   <Input
                     id="signup-password"
                     type="password"
@@ -241,12 +367,12 @@ export default function SignInPage() {
                     disabled={loading}
                     required
                     minLength={6}
-                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 backdrop-blur-sm focus:bg-white/20 focus:border-white/40"
+                    className="bg-white/5 border-white/20 text-white placeholder:text-gray-500 backdrop-blur-sm focus:bg-white/10 focus:border-white/40 focus:ring-2 focus:ring-purple-500/50 h-12 text-base"
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="confirm-password" className="text-white">Confirm Password</Label>
+                <div className="space-y-3">
+                  <Label htmlFor="confirm-password" className="text-white font-medium">Confirm Password</Label>
                   <Input
                     id="confirm-password"
                     type="password"
@@ -255,15 +381,20 @@ export default function SignInPage() {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     disabled={loading}
                     required
-                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 backdrop-blur-sm focus:bg-white/20 focus:border-white/40"
+                    className="bg-white/5 border-white/20 text-white placeholder:text-gray-500 backdrop-blur-sm focus:bg-white/10 focus:border-white/40 focus:ring-2 focus:ring-purple-500/50 h-12 text-base"
                   />
                 </div>
 
-                <Button type="submit" className="w-full bg-green-600/80 hover:bg-green-600 text-white backdrop-blur-sm" disabled={loading}>
+                <Button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold py-3 text-base shadow-lg border-0"
+                  disabled={loading}
+                  size="lg"
+                >
                   {loading ? (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                   ) : (
-                    <Mail className="mr-2 h-4 w-4" />
+                    <Mail className="mr-2 h-5 w-5" />
                   )}
                   Create Account
                 </Button>
@@ -272,8 +403,9 @@ export default function SignInPage() {
           </Tabs>
 
           {fromApp && (
-            <div className="text-center text-sm text-gray-400">
-              <p>After signing in, you'll be redirected back to the desktop app</p>
+            <div className="text-center text-sm text-gray-400 bg-white/5 rounded-lg p-3 border border-white/10">
+              <p className="font-medium">🖥️ Desktop App Integration</p>
+              <p className="text-xs mt-1">After signing in, you'll be redirected back to the Hintify app</p>
             </div>
           )}
         </CardContent>
