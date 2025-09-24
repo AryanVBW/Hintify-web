@@ -3,19 +3,17 @@ import { Button } from "@/components/ui/button"
 import { Spotlight } from "@/components/ui/spotlight"
 import { SplineScene } from "@/components/ui/spline-scene"
 import { LazyAnimatedGradient, LazySparkles } from "@/components/ui/lazy-animations"
-import { BentoGrid, BentoCard } from "@/components/ui/bento-grid"
+import HintifyMagicBento from "@/components/HintifyMagicBento"
 import { Navbar } from "@/components/ui/navbar"
 import { DownloadButton } from "@/components/ui/download-button"
 import {
   CheckCircle,
   ArrowRight,
-  Lightbulb,
+  BookOpen,
+  Github,
   Brain,
   Target,
   Zap,
-  MessageSquare,
-  BookOpen,
-  Github,
 } from "lucide-react"
 import { Metadata } from "next"
 
@@ -152,53 +150,19 @@ export default function HomePage() {
             </p>
           </div>
 
-          <BentoGrid className="lg:grid-rows-3">
-            <BentoCard
-              name="Progressive Hints"
-              className="lg:row-start-1 lg:row-end-4 lg:col-start-2 lg:col-end-3"
-              background={<div className="absolute inset-0 bg-black/80 backdrop-blur-sm border border-white/10" />}
-              Icon={Lightbulb}
-              description="Start with gentle nudges and gradually get more specific hints if you need them. Each hint builds on the last, guiding your thought process naturally."
-              href="#"
-              cta="Learn more"
-            />
-            <BentoCard
-              name="Think-First Approach"
-              className="lg:col-start-1 lg:col-end-2 lg:row-start-1 lg:row-end-3"
-              background={<div className="absolute inset-0 bg-black/80 backdrop-blur-sm border border-white/10" />}
-              Icon={Brain}
-              description="We never give you the answer directly. Instead, we ask questions and provide clues that help you discover the solution yourself."
-              href="#"
-              cta="Learn more"
-            />
-            <BentoCard
-              name="Contextual Guidance"
-              className="lg:col-start-1 lg:col-end-2 lg:row-start-3 lg:row-end-4"
-              background={<div className="absolute inset-0 bg-black/80 backdrop-blur-sm border border-white/10" />}
-              Icon={Target}
-              description="Hints are tailored to your specific problem and current understanding level, ensuring you get just the right amount of guidance."
-              href="#"
-              cta="Learn more"
-            />
-            <BentoCard
-              name="Learning Reinforcement"
-              className="lg:col-start-3 lg:col-end-3 lg:row-start-1 lg:row-end-2"
-              background={<div className="absolute inset-0 bg-black/80 backdrop-blur-sm border border-white/10" />}
-              Icon={Zap}
-              description="Each interaction strengthens your problem-solving skills and builds confidence in your ability to think through challenges."
-              href="#"
-              cta="Learn more"
-            />
-            <BentoCard
-              name="Human-Like Conversation"
-              className="lg:col-start-3 lg:col-end-3 lg:row-start-2 lg:row-end-4"
-              background={<div className="absolute inset-0 bg-black/80 backdrop-blur-sm border border-white/10" />}
-              Icon={MessageSquare}
-              description="Natural, encouraging conversations that feel like talking to a thoughtful friend who wants to help you grow, not just get the answer."
-              href="#"
-              cta="Learn more"
-            />
-          </BentoGrid>
+          <HintifyMagicBento
+            textAutoHide={true}
+            enableStars={true}
+            enableSpotlight={true}
+            enableBorderGlow={true}
+            disableAnimations={false}
+            spotlightRadius={300}
+            particleCount={12}
+            enableTilt={false}
+            glowColor="132, 0, 255"
+            clickEffect={true}
+            enableMagnetism={true}
+          />
         </div>
       </section>
 
