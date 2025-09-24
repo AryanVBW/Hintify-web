@@ -1,9 +1,14 @@
 import { Button } from "@/components/ui/button"
 
 export function DownloadButton() {
+  const handleDownload = () => {
+    window.open('https://github.com/AryanVBW/Hintify/releases/download/v1/Hintify.SnapAssist.AI-1.0.3-mac-arm64.zip', '_blank')
+  }
+
   return (
     <Button
       size="lg"
+      onClick={handleDownload}
       className="bg-black text-white hover:bg-gray-800 border border-gray-300 flex items-center gap-3 px-6 py-3 rounded-xl"
     >
       {/* Apple Logo SVG */}
