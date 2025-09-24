@@ -12,19 +12,24 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 })
 
 // Auth helper functions
-export const signInWithGoogle = async () => {
+export const signInWithGoogle = async (fromApp: boolean = false) => {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+  const redirectTo = fromApp
+    ? `${baseUrl}/auth-success?source=app`
+    : `${baseUrl}/auth-success?source=web`
+
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/auth-success?source=app`
+      redirectTo
     }
   })
-  
+
   if (error) {
     console.error('Error signing in with Google:', error)
     throw error
   }
-  
+
   return data
 }
 
@@ -42,20 +47,25 @@ export const signInWithEmail = async (email: string, password: string) => {
   return data
 }
 
-export const signUpWithEmail = async (email: string, password: string) => {
+export const signUpWithEmail = async (email: string, password: string, fromApp: boolean = false) => {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+  const redirectTo = fromApp
+    ? `${baseUrl}/auth-success?source=app`
+    : `${baseUrl}/auth-success?source=web`
+
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/auth-success?source=app`
+      emailRedirectTo: redirectTo
     }
   })
-  
+
   if (error) {
     console.error('Error signing up with email:', error)
     throw error
   }
-  
+
   return data
 }
 

@@ -1,39 +1,31 @@
 'use client'
 
-import React, { useState } from 'react'
-import { signInWithGoogle } from '@/lib/supabase'
+import React from 'react'
 import { Button } from '@/components/ui/button'
+import { useRouter } from 'next/navigation'
 
 interface SignInButtonProps {
   className?: string
   children?: React.ReactNode
 }
 
-export const SignInButton: React.FC<SignInButtonProps> = ({ 
-  className = '', 
-  children = 'Sign In' 
+export const SignInButton: React.FC<SignInButtonProps> = ({
+  className = '',
+  children = 'Sign In'
 }) => {
-  const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
-  const handleSignIn = async () => {
-    try {
-      setLoading(true)
-      await signInWithGoogle()
-    } catch (error) {
-      console.error('Sign in error:', error)
-      // You might want to show a toast or error message here
-    } finally {
-      setLoading(false)
-    }
+  const handleSignIn = () => {
+    // Redirect to the dedicated sign-in page
+    router.push('/sign-in')
   }
 
   return (
     <Button
       onClick={handleSignIn}
-      disabled={loading}
       className={className}
     >
-      {loading ? 'Signing in...' : children}
+      {children}
     </Button>
   )
 }

@@ -102,15 +102,23 @@ export default function AuthSuccessPage() {
           <div className="mx-auto mb-4">
             <CheckCircle className="h-16 w-16 text-green-400" />
           </div>
-          <CardTitle className="text-white text-2xl">Authentication Successful!</CardTitle>
+          <CardTitle className="text-white text-2xl">
+            {fromApp ? 'Authentication Successful!' : 'Welcome to Hintify!'}
+          </CardTitle>
           <CardDescription className="text-gray-400">
-            Welcome, {user.user_metadata?.full_name || user.email}
+            {fromApp
+              ? `Welcome back, ${user.user_metadata?.full_name || user.email}!`
+              : `Hello, ${user.user_metadata?.full_name || user.email}! You're now signed in.`
+            }
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="text-center text-gray-300">
             <p className="mb-4">
-              You have successfully signed in to Hintify. Click the button below to open the desktop app.
+              {fromApp
+                ? 'You have successfully signed in to Hintify. Click the button below to open the desktop app.'
+                : 'You are now signed in to Hintify! You can continue using the website or download the desktop app.'
+              }
             </p>
           </div>
 
