@@ -6,6 +6,7 @@ import { LazyAnimatedGradient, LazySparkles } from "@/components/ui/lazy-animati
 import HintifyMagicBento from "@/components/HintifyMagicBento"
 import { Navbar } from "@/components/ui/navbar"
 import { DownloadButton } from "@/components/ui/download-button"
+import { InstallScriptButton } from "@/components/ui/install-script-button"
 import {
   CheckCircle,
   ArrowRight,
@@ -56,13 +57,7 @@ export default function HomePage() {
 
                 <div className="flex flex-col sm:flex-row gap-4 mt-8">
                   <DownloadButton />
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="border-neutral-600 text-neutral-300 hover:bg-neutral-800 bg-transparent"
-                  >
-                    See How It Works
-                  </Button>
+                  <InstallScriptButton />
                 </div>
 
                 <div className="flex items-center gap-8 text-sm text-neutral-400 mt-6">

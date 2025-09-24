@@ -137,6 +137,10 @@
     grid-row: 2 / span 2;
   }
 
+  .card:nth-child(5) {
+    grid-column: span 2;
+  }
+
   .card:nth-child(6) {
     grid-column: 4;
     grid-row: 3;
