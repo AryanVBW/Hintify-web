@@ -3,13 +3,9 @@
 import type React from "react"
 import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
-import {
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton
-} from "@clerk/nextjs"
+import { useAuth } from "@/components/auth/AuthProvider"
+import { SignInButton } from "@/components/auth/SignInButton"
+import { UserButton } from "@/components/auth/UserButton"
 
 const AnimatedNavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
   const defaultTextColor = "text-gray-300"
@@ -27,6 +23,7 @@ const AnimatedNavLink = ({ href, children }: { href: string; children: React.Rea
 }
 
 export function Navbar() {
+  const { user } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const [headerShapeClass, setHeaderShapeClass] = useState("rounded-full")
   const shapeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -70,48 +67,28 @@ export function Navbar() {
 
   const authButtonsElement = (
     <>
-      <SignedOut>
-        <SignInButton 
-          mode="modal"
-          forceRedirectUrl="/auth-success?source=app"
-        >
-          <button className="px-4 py-2 sm:px-3 text-xs sm:text-sm border border-[#333] bg-[rgba(31,31,31,0.62)] text-gray-300 rounded-full hover:border-white/50 hover:text-white transition-colors duration-200 w-full sm:w-auto">
+      {!user ? (
+        <>
+          <SignInButton className="px-4 py-2 sm:px-3 text-xs sm:text-sm border border-[#333] bg-[rgba(31,31,31,0.62)] text-gray-300 rounded-full hover:border-white/50 hover:text-white transition-colors duration-200 w-full sm:w-auto">
             Sign In
-          </button>
-        </SignInButton>
-        <div className="relative group w-full sm:w-auto">
-          <div
-            className="absolute inset-0 -m-2 rounded-full
-                         hidden sm:block
-                         bg-yellow-400
-                         opacity-40 filter blur-lg pointer-events-none
-                         transition-all duration-300 ease-out
-                         group-hover:opacity-60 group-hover:blur-xl group-hover:-m-3"
-          ></div>
-          <SignUpButton 
-            mode="modal"
-            forceRedirectUrl="/auth-success?source=app"
-          >
-            <button className="relative z-10 px-4 py-2 sm:px-3 text-xs sm:text-sm font-semibold text-black bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full hover:from-yellow-500 hover:to-yellow-600 transition-all duration-200 w-full sm:w-auto">
+          </SignInButton>
+          <div className="relative group w-full sm:w-auto">
+            <div
+              className="absolute inset-0 -m-2 rounded-full
+                           hidden sm:block
+                           bg-yellow-400
+                           opacity-40 filter blur-lg pointer-events-none
+                           transition-all duration-300 ease-out
+                           group-hover:opacity-60 group-hover:blur-xl group-hover:-m-3"
+            ></div>
+            <SignInButton className="relative z-10 px-4 py-2 sm:px-3 text-xs sm:text-sm font-semibold text-black bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full hover:from-yellow-500 hover:to-yellow-600 transition-all duration-200 w-full sm:w-auto">
               Try Hintify
-            </button>
-          </SignUpButton>
-        </div>
-      </SignedOut>
-      <SignedIn>
-        <UserButton 
-          appearance={{
-            elements: {
-              avatarBox: "w-8 h-8 border-2 border-white/20",
-              userButtonPopoverCard: "backdrop-blur-xl bg-black/90 border border-white/20 shadow-2xl rounded-xl",
-              userButtonPopoverText: "text-white",
-              userButtonPopoverActions__manageAccount: "text-gray-300 hover:text-white",
-              userButtonPopoverActions__signOut: "text-gray-300 hover:text-red-400",
-              userButtonPopoverFooter: "border-t border-white/10"
-            }
-          }}
-        />
-      </SignedIn>
+            </SignInButton>
+          </div>
+        </>
+      ) : (
+        <UserButton className="w-8 h-8" />
+      )}
     </>
   )
 

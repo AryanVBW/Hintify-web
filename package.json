@@ -9,7 +9,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "@clerk/nextjs": "^6.32.0",
     "@emotion/is-prop-valid": "latest",
     "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^3.10.0",
@@ -43,6 +42,7 @@
     "@radix-ui/react-tooltip": "1.1.6",
     "@splinetool/react-spline": "latest",
     "@splinetool/runtime": "latest",
+    "@supabase/supabase-js": "^2.57.4",
     "@tsparticles/engine": "latest",
     "@tsparticles/react": "latest",
     "@tsparticles/slim": "latest",
@@ -80,6 +80,8 @@
     "@types/node": "^22",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "15.5.3",
     "postcss": "^8.5",
     "tailwindcss": "^4.1.9",
     "tw-animate-css": "1.3.3",

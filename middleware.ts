@@ -1,41 +1,34 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-
-// Define protected routes (currently redirecting to coming-soon)
-const isProtectedRoute = createRouteMatcher([
-  '/dashboard(.*)',
-]);
+import type { NextRequest } from 'next/server'
 
 // Define routes that should redirect to coming-soon
-const isComingSoonRoute = createRouteMatcher([
-  '/dashboard(.*)',
-  '/auth-success(.*)',
-  '/privacy(.*)',
-  '/terms(.*)',
-  '/profile(.*)',
-  '/settings(.*)',
-  '/analytics(.*)',
-  '/admin(.*)',
-  '/api/dashboard(.*)',
-  '/app(.*)',
-  '/pricing(.*)',
-  '/features(.*)',
-  '/docs(.*)',
-  '/help(.*)',
-  '/support(.*)',
-]);
+const comingSoonRoutes = [
+  '/dashboard',
+  '/privacy',
+  '/terms',
+  '/profile',
+  '/settings',
+  '/analytics',
+  '/admin',
+  '/api/dashboard',
+  '/app',
+  '/pricing',
+  '/features',
+  '/docs',
+  '/help',
+  '/support',
+];
 
-export default clerkMiddleware(async (auth, req) => {
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
   // Redirect unbuilt routes to coming-soon
-  if (isComingSoonRoute(req) && req.nextUrl.pathname !== '/coming-soon') {
-    return NextResponse.redirect(new URL('/coming-soon', req.url));
+  if (comingSoonRoutes.some(route => pathname.startsWith(route)) && pathname !== '/coming-soon') {
+    return NextResponse.redirect(new URL('/coming-soon', request.url));
   }
 
-  // Protect dashboard routes (though they redirect anyway)
-  if (isProtectedRoute(req)) {
-    await auth.protect();
-  }
-});
+  return NextResponse.next();
+}
 
 export const config = {
   matcher: [
