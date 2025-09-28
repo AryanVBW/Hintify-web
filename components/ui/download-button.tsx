@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 
 export function DownloadButton() {
   const handleDownload = () => {
-    window.open('https://github.com/AryanVBW/Hintify/releases/download/v1/Hintify.SnapAssist.AI-1.0.3-mac-arm64.zip', '_blank')
+    window.open('https://github.com/AryanVBW/Hintify/releases/download/v1/Hintify.SnapAssist.AI-1.0.4-mac-arm64.dmg', '_blank')
   }
 
   return (
