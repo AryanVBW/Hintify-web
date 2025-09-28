@@ -285,6 +285,18 @@ export default function HomePage() {
             <p className="text-neutral-400">
               © 2024 Hintify. All rights reserved.
             </p>
+            <div className="text-xs text-neutral-500 mt-2">
+              <p>
+                Founded by: 
+                <a href="https://linkedin.com/in/rishabh-bafna-98402212a" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 ml-1">Rishabh Bafna</a> 
+                <span className="text-neutral-600 mx-1">•</span>
+                <a href="https://linkedin.com/in/vivek-wagadare" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">Vivek W</a> |
+                GitHub: 
+                <a href="https://github.com/RishabhIIITD" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-neutral-300 ml-1">RishabhIIITD</a>
+                <span className="text-neutral-600 mx-1">•</span>
+                <a href="https://github.com/AryanVBW" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-neutral-300">AryanVBW</a>
+              </p>
+            </div>
           </div>
         </div>
       </footer>

@@ -283,10 +283,20 @@ export default function ComingSoonMain({
             <p className="text-gray-400 text-sm">
               © 2024 Hintify. Crafting the future of intelligent learning. | All rights reserved.
             </p>
-            <p className="text-gray-500 text-xs mt-2">
-              Created by <a href="https://github.com/AryanVBW" target="_blank" rel="noopener noreferrer" className="text-pink-400 hover:text-pink-300 transition-colors">Vivek Wagadare</a> | 
-              Contact: <a href="mailto:vivek.aryanvbw@gmail.com" className="text-pink-400 hover:text-pink-300 transition-colors"> vivek.aryanvbw@gmail.com</a>
-            </p>
+            <div className="text-gray-500 text-xs mt-2 space-y-1">
+              <p>
+                Founded by: 
+                <a href="https://linkedin.com/in/rishabh-bafna-98402212a" target="_blank" rel="noopener noreferrer" className="text-pink-400 hover:text-pink-300 transition-colors ml-1">Rishabh Bafna</a> 
+                <span className="text-gray-600 mx-1">•</span>
+                <a href="https://linkedin.com/in/vivek-wagadare" target="_blank" rel="noopener noreferrer" className="text-pink-400 hover:text-pink-300 transition-colors">Vivek W</a>
+              </p>
+              <p>
+                GitHub: 
+                <a href="https://github.com/RishabhIIITD" target="_blank" rel="noopener noreferrer" className="text-pink-400 hover:text-pink-300 transition-colors ml-1">RishabhIIITD</a>
+                <span className="text-gray-600 mx-1">•</span>
+                <a href="https://github.com/AryanVBW" target="_blank" rel="noopener noreferrer" className="text-pink-400 hover:text-pink-300 transition-colors">AryanVBW</a>
+              </p>
+            </div>
           </div>
         </div>
       </div>

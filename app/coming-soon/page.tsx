@@ -3,6 +3,7 @@
 import React from 'react'
 import { LaserFlow } from "@/components/LaserFlow"
 import { Button } from "@/components/ui/button"
+import { Footer } from "@/components/ui/footer"
 import { 
   Mail, 
   X
@@ -163,15 +164,8 @@ export default function ComingSoonPage() {
             </Button>
           </div>
 
-          {/* Footer */}
-          <div className="text-center">
-            <p className="text-gray-500 text-sm">
-              © 2024 Hintify. All rights reserved. | Building the future of AI-assisted learning.
-            </p>
-            <p className="text-gray-600 text-xs mt-2">
-              Created by <a href="https://github.com/AryanVBW" target="_blank" rel="noopener noreferrer" className="text-pink-400 hover:text-pink-300">Vivek Wagadare</a> | Contact: <a href="mailto:vivek.aryanvbw@gmail.com" className="text-pink-400 hover:text-pink-300">vivek.aryanvbw@gmail.com</a>
-            </p>
-          </div>
+          {/* Updated Footer with founders info */}
+          <Footer variant="coming-soon" />
         </div>
       </div>
     </div>

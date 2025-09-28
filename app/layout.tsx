@@ -5,6 +5,7 @@ import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import { AuthProvider } from "@/components/auth/AuthProvider"
+import { ConditionalFooter } from "@/components/ui/conditional-footer"
 import "./globals.css"
 
 export const metadata: Metadata = {
@@ -25,8 +26,11 @@ export const metadata: Metadata = {
     "cognitive development",
     "smart learning"
   ],
-  authors: [{ name: "Hintify Team" }],
-  creator: "Hintify",
+  authors: [
+    { name: "Rishabh Bafna", url: "https://linkedin.com/in/rishabh-bafna-98402212a" },
+    { name: "Vivek W", url: "https://linkedin.com/in/vivek-wagadare" }
+  ],
+  creator: "Rishabh Bafna & Vivek W",
   publisher: "Hintify",
   formatDetection: {
     email: false,
@@ -97,10 +101,18 @@ export default function RootLayout({
       "price": "0",
       "priceCurrency": "USD"
     },
-    "author": {
-      "@type": "Organization",
-      "name": "Hintify Team"
-    },
+    "author": [
+      {
+        "@type": "Person",
+        "name": "Rishabh Bafna",
+        "url": "https://linkedin.com/in/rishabh-bafna-98402212a"
+      },
+      {
+        "@type": "Person", 
+        "name": "Vivek W",
+        "url": "https://linkedin.com/in/vivek-wagadare"
+      }
+    ],
     "keywords": "AI learning, hints not answers, critical thinking, problem solving, educational AI",
     "featureList": [
       "Progressive hint system",
@@ -129,7 +141,12 @@ export default function RootLayout({
           <link rel="icon" type="image/png" href="/favicon.png" />
         </head>
         <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
-          <Suspense fallback={null}>{children}</Suspense>
+          <div className="min-h-screen flex flex-col">
+            <main className="flex-1">
+              <Suspense fallback={null}>{children}</Suspense>
+            </main>
+            <ConditionalFooter />
+          </div>
           <Analytics />
         </body>
       </html>
