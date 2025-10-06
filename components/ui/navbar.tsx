@@ -63,6 +63,7 @@ export function Navbar() {
     { label: "How It Works", href: "#how-it-works" },
     { label: "Examples", href: "#examples" },
     { label: "Dashboard", href: "/dashboard" },
+    { label: "Report Issue", href: "/report-issue" },
   ]
 
   const authButtonsElement = (
