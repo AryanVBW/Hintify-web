@@ -7,7 +7,8 @@ A comprehensive issue reporting system for Hintify that allows users to submit b
 - ✅ **Beautiful UI** - Matches Hintify's black & yellow theme
 - ✅ **Form Validation** - Real-time validation with helpful error messages
 - ✅ **Screenshot Upload** - Upload up to 5 images (5MB each) with live preview
-- ✅ **Email Notifications** - Professional HTML emails sent via Resend
+- ✅ **Dual Email System** - Sends emails to both support team AND user confirmation ✨ NEW!
+- ✅ **User Confirmation Email** - Beautiful branded email sent to users after submission
 - ✅ **Responsive Design** - Works perfectly on mobile, tablet, and desktop
 - ✅ **Loading States** - Clear feedback during submission
 - ✅ **Success Confirmation** - Beautiful thank you page
@@ -71,6 +72,7 @@ npm run dev
 | **REPORT_ISSUE_SUMMARY.md** | Implementation details | Understanding the code |
 | **FEATURE_OVERVIEW.md** | Visual guide & structure | Design reference |
 | **SETUP_CHECKLIST.md** | Testing & deployment checklist | Before going live |
+| **CONFIRMATION_EMAIL_FEATURE.md** | User confirmation email details | Understanding dual email system |
 
 ## 🎯 Form Fields
 
@@ -82,9 +84,11 @@ npm run dev
 | Name | Text | 2-100 characters | Yes |
 | Email | Email | Valid email format | Yes |
 
-## 📧 Email Template
+## 📧 Dual Email System
 
-The system sends professional HTML emails with:
+The system sends **TWO professional HTML emails** per submission:
+
+### 1. Support Team Email
 - Branded header with Hintify logo
 - Issue type badge
 - User contact information
@@ -92,6 +96,16 @@ The system sends professional HTML emails with:
 - Screenshot attachments
 - Timestamp
 - Reply-to functionality
+
+### 2. User Confirmation Email ✨ NEW!
+- Beautiful black & yellow themed design
+- Thank you message with checkmark
+- Summary of submitted report
+- Expected response time (2-3 business days)
+- "What happens next" information
+- Professional and reassuring tone
+- Mobile responsive
+- No attachments (keeps email lightweight)
 
 ## 🎨 Design System
 

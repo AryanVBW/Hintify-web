@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Loader2, Upload, X, CheckCircle, AlertCircle, FileImage } from 'lucide-react'
+import { Loader2, Upload, X, CheckCircle, AlertCircle } from 'lucide-react'
 import { Navbar } from '@/components/ui/navbar'
 import {
   Select,
@@ -322,7 +322,7 @@ export default function ReportIssuePage() {
                         <FormLabel className="text-white">Your Name</FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="John Doe"
+                            placeholder="your name here..."
                             className="bg-white/5 border-white/20 text-white placeholder:text-gray-500"
                             {...field}
                           />
@@ -342,7 +342,7 @@ export default function ReportIssuePage() {
                         <FormControl>
                           <Input
                             type="email"
-                            placeholder="john@example.com"
+                            placeholder="xyz@gamil.com"
                             className="bg-white/5 border-white/20 text-white placeholder:text-gray-500"
                             {...field}
                           />
@@ -374,6 +374,24 @@ export default function ReportIssuePage() {
               </Form>
             </CardContent>
           </Card>
+
+          {/* Footer */}
+          <footer className="mt-16 text-center text-gray-400 text-sm">
+            <div className="border-t border-white/10 pt-8">
+              <p className="mb-2">
+                © {new Date().getFullYear()} Hintify. All rights reserved.
+              </p>
+              <p className="text-gray-500">
+                Need help? Contact us at{' '}
+                <a
+                  href="mailto:vivek.aryanvbw@gmail.com"
+                  className="text-yellow-400 hover:text-yellow-300 transition-colors"
+                >
+                  vivek.aryanvbw@gmail.com
+                </a>
+              </p>
+            </div>
+          </footer>
         </div>
       </div>
     </div>

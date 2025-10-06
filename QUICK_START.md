@@ -59,16 +59,27 @@ Fill out the form and submit. Check your email!
 - **Name & Email**: Contact information fields
 - **Real-time validation** with helpful error messages
 
-### ✅ Email Notifications
-- Professional HTML email template
-- All form data included
-- Screenshots attached
-- Reply-to user's email
-- Sent via Resend
+### ✅ Dual Email System ✨ NEW!
+**Two emails sent per submission:**
+
+1. **Support Team Email**
+   - Professional HTML email template
+   - All form data included
+   - Screenshots attached
+   - Reply-to user's email
+   - Sent via Resend
+
+2. **User Confirmation Email** ✨
+   - Beautiful black & yellow themed design
+   - Thank you message with checkmark
+   - Summary of their submission
+   - Expected response time
+   - Professional and reassuring
 
 ### ✅ Great User Experience
 - Loading spinner during submission
 - Success page with thank you message
+- Immediate email confirmation to user
 - Clear error messages
 - Smooth animations
 

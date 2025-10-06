@@ -37,14 +37,14 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://hintify.com'),
+  metadataBase: new URL('https://hintify.nexus-v.tech'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     title: "Hintify - Get Hints, Not Answers | AI-Powered Learning Assistant",
     description: "Think smarter, not harder. Hintify gives you just the right nudge to solve problems yourself. Develop critical thinking skills with our AI that provides hints, not answers.",
-    url: 'https://hintify.com',
+    url: 'https://hintify.nexus-v.tech',
     siteName: 'Hintify',
     images: [
       {
@@ -93,7 +93,7 @@ export default function RootLayout({
     "@type": "SoftwareApplication",
     "name": "Hintify",
     "description": "AI-powered learning assistant that provides progressive hints to help you think through problems instead of giving direct answers.",
-    "url": "https://hintify.com",
+    "url": "https://hintify.nexus-v.tech",
     "applicationCategory": "EducationalApplication",
     "operatingSystem": "Web, iOS, Android",
     "offers": {
