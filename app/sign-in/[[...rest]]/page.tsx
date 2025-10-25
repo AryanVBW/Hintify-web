@@ -9,14 +9,20 @@ import { useAuth } from '@/components/auth/AuthProvider'
 export default function SignInCatchAllPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const fromApp = searchParams.get('from') === 'app'
+  const fromApp = searchParams.get('source') === 'app' || searchParams.get('from') === 'app'
   const { user, loading: authLoading } = useAuth()
 
   useEffect(() => {
     if (!authLoading && user) {
-      router.push('/')
+      // If user is already authenticated and came from app, redirect to home with source=app
+      // This will trigger the "Open in App" popup
+      if (fromApp) {
+        router.push('/?source=app&authenticated=true')
+      } else {
+        router.push('/')
+      }
     }
-  }, [user, authLoading, router])
+  }, [user, authLoading, router, fromApp])
 
   return (
     <div className="min-h-screen bg-gray-950 relative overflow-hidden flex items-center justify-center p-4">

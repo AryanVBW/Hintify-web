@@ -7,6 +7,7 @@ import HintifyMagicBento from "@/components/HintifyMagicBento"
 import { Navbar } from "@/components/ui/navbar"
 import { DownloadButton } from "@/components/ui/download-button"
 import { InstallScriptButton } from "@/components/ui/install-script-button"
+import { OpenInAppPopup } from "@/components/OpenInAppPopup"
 import Link from "next/link"
 import {
   CheckCircle,
@@ -35,6 +36,9 @@ export default function HomePage() {
     <div className="min-h-screen bg-black">
       {/* Navigation Component */}
       <Navbar />
+
+      {/* Open in App Popup - shows when user signs in from app */}
+      <OpenInAppPopup />
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
