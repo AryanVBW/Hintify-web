@@ -23,7 +23,7 @@ const AnimatedNavLink = ({ href, children }: { href: string; children: React.Rea
 }
 
 export function Navbar() {
-  const { user } = useAuth()
+  const { user, loading } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const [headerShapeClass, setHeaderShapeClass] = useState("rounded-full")
   const shapeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -68,7 +68,11 @@ export function Navbar() {
 
   const authButtonsElement = (
     <>
-      {!user ? (
+      {loading ? (
+        // Show loading state - empty space to prevent layout shift
+        <div className="w-8 h-8" />
+      ) : !user ? (
+        // Not authenticated - show sign in buttons
         <>
           <SignInButton className="px-4 py-2 sm:px-3 text-xs sm:text-sm border border-[#333] bg-[rgba(31,31,31,0.62)] text-gray-300 rounded-full hover:border-white/50 hover:text-white transition-colors duration-200 w-full sm:w-auto">
             Sign In
@@ -88,6 +92,7 @@ export function Navbar() {
           </div>
         </>
       ) : (
+        // Authenticated - show user button
         <UserButton className="w-8 h-8" />
       )}
     </>

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import { useAuth } from './AuthProvider'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -20,21 +21,30 @@ interface UserButtonProps {
 
 export const UserButton: React.FC<UserButtonProps> = ({ className = '' }) => {
   const { user, signOut } = useAuth()
+  const router = useRouter()
   const [loading, setLoading] = useState(false)
-
-  if (!user) {
-    return null
-  }
 
   const handleSignOut = async () => {
     try {
       setLoading(true)
       await signOut()
+      // Redirect to home page after sign out
+      router.push('/')
     } catch (error) {
       console.error('Sign out error:', error)
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleProfileClick = () => {
+    // Navigate to profile page (currently redirects to coming-soon via middleware)
+    router.push('/profile')
+  }
+
+  // Return null if no user (shouldn't happen due to navbar check, but safety measure)
+  if (!user) {
+    return null
   }
 
   const userInitials = user.user_metadata?.full_name
@@ -50,9 +60,9 @@ export const UserButton: React.FC<UserButtonProps> = ({ className = '' }) => {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className={`relative h-8 w-8 rounded-full ${className}`}>
           <Avatar className="h-8 w-8">
-            <AvatarImage 
-              src={user.user_metadata?.avatar_url || user.user_metadata?.picture} 
-              alt={user.user_metadata?.full_name || user.email || 'User'} 
+            <AvatarImage
+              src={user.user_metadata?.avatar_url || user.user_metadata?.picture}
+              alt={user.user_metadata?.full_name || user.email || 'User'}
             />
             <AvatarFallback>{userInitials}</AvatarFallback>
           </Avatar>
@@ -70,7 +80,7 @@ export const UserButton: React.FC<UserButtonProps> = ({ className = '' }) => {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={handleProfileClick}>
           <User className="mr-2 h-4 w-4" />
           <span>Profile</span>
         </DropdownMenuItem>
