@@ -5,6 +5,7 @@ import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import { ClerkProvider } from '@clerk/nextjs'
+import { AuthProvider } from "@/components/auth/AuthProvider"
 import { ConditionalFooter } from "@/components/ui/conditional-footer"
 import "./globals.css"
 
@@ -125,31 +126,33 @@ export default function RootLayout({
 
   return (
     <ClerkProvider>
-      <html lang="en">
-        <head>
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-          />
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-          <link rel="preconnect" href="https://prod.spline.design" />
-          <link rel="dns-prefetch" href="https://vercel-insights.com" />
-          <meta name="theme-color" content="#000000" />
-          <meta name="msapplication-TileColor" content="#000000" />
-          <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-          <link rel="icon" type="image/png" href="/favicon.png" />
-        </head>
-        <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
-          <div className="min-h-screen flex flex-col">
-            <main className="flex-1">
-              <Suspense fallback={null}>{children}</Suspense>
-            </main>
-            <ConditionalFooter />
-          </div>
-          <Analytics />
-        </body>
-      </html>
+      <AuthProvider>
+        <html lang="en">
+          <head>
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+            />
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+            <link rel="preconnect" href="https://prod.spline.design" />
+            <link rel="dns-prefetch" href="https://vercel-insights.com" />
+            <meta name="theme-color" content="#000000" />
+            <meta name="msapplication-TileColor" content="#000000" />
+            <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+            <link rel="icon" type="image/png" href="/favicon.png" />
+          </head>
+          <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
+            <div className="min-h-screen flex flex-col">
+              <main className="flex-1">
+                <Suspense fallback={null}>{children}</Suspense>
+              </main>
+              <ConditionalFooter />
+            </div>
+            <Analytics />
+          </body>
+        </html>
+      </AuthProvider>
     </ClerkProvider>
   )
 }

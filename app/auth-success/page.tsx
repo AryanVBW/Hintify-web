@@ -17,9 +17,9 @@ export default function AuthSuccessPage() {
   const isFromApp = source === 'app'
 
   useEffect(() => {
-    // If not from app, redirect to coming soon
+    // If not from app, redirect to home page
     if (!isFromApp) {
-      router.replace("/coming-soon")
+      router.replace("/")
       return
     }
   }, [isFromApp, router])
