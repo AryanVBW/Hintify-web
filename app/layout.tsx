@@ -125,7 +125,12 @@ export default function RootLayout({
   }
 
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      signInFallbackRedirectUrl="/"
+      signUpFallbackRedirectUrl="/"
+      signInForceRedirectUrl={undefined}
+      signUpForceRedirectUrl={undefined}
+    >
       <AuthProvider>
         <html lang="en">
           <head>

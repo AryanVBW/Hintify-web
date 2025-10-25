@@ -66,7 +66,7 @@ export default function SignUpPage() {
                 formFieldInfoText: 'text-purple-400 font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]',
               }
             }}
-            redirectUrl={fromApp ? '/auth-success?source=app' : '/'}
+            fallbackRedirectUrl={fromApp ? '/auth-success?source=app' : '/'}
             signInUrl="/sign-in"
           />
         </div>

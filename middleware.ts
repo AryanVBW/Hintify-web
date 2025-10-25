@@ -1,22 +1,9 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 import { NextResponse } from "next/server";
 
-// Define routes that should redirect to coming-soon
+// Define routes that should redirect to coming-soon (ONLY /dashboard)
 const comingSoonRoutes = [
   '/dashboard',
-  '/privacy',
-  '/terms',
-  '/profile',
-  '/settings',
-  '/analytics',
-  '/admin',
-  '/api/dashboard',
-  '/app',
-  '/pricing',
-  '/features',
-  '/docs',
-  '/help',
-  '/support',
 ];
 
 // Define public routes that don't require authentication
@@ -27,6 +14,9 @@ const isPublicRoute = createRouteMatcher([
   '/auth/desktop(.*)',
   '/auth-success(.*)',
   '/coming-soon(.*)',
+  '/privacy(.*)',
+  '/terms(.*)',
+  '/report-issue(.*)',
   '/api/auth/desktop-token(.*)',
   '/api/report-issue(.*)',
 ])
@@ -34,7 +24,7 @@ const isPublicRoute = createRouteMatcher([
 export default clerkMiddleware(async (auth, request) => {
   const { pathname } = request.nextUrl;
 
-  // Redirect unbuilt routes to coming-soon
+  // Redirect ONLY /dashboard to coming-soon (unbuilt feature)
   if (comingSoonRoutes.some(route => pathname.startsWith(route)) && pathname !== '/coming-soon') {
     return NextResponse.redirect(new URL('/coming-soon', request.url));
   }
