@@ -560,4 +560,287 @@
   .cl-socialButtonsBlock {
     animation: fade-in-up 0.5s ease-out 0.15s backwards !important;
   }
+
+  /* ===== COMPREHENSIVE TEXT VISIBILITY FIXES ===== */
+  /* Ensure ALL text elements are visible with white color */
+
+  /* Main content text */
+  .cl-main,
+  .cl-main * {
+    color: white !important;
+  }
+
+  /* All text elements */
+  .cl-text,
+  .cl-internal-text,
+  .cl-internal-b3id6t8l {
+    color: white !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+  }
+
+  /* Form field hints and descriptions */
+  .cl-formFieldHintText,
+  .cl-formFieldInfoText,
+  .cl-formFieldSuccessText,
+  .cl-formFieldWarningText {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 600 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+  }
+
+  /* Success messages - bright green */
+  .cl-formFieldSuccessText {
+    color: rgba(74, 222, 128, 1) !important;
+  }
+
+  /* Warning messages - bright yellow */
+  .cl-formFieldWarningText {
+    color: rgba(250, 204, 21, 1) !important;
+  }
+
+  /* Info messages - bright blue */
+  .cl-formFieldInfoText {
+    color: rgba(96, 165, 250, 1) !important;
+  }
+
+  /* OTP/Verification code text */
+  .cl-otpCodeFieldInput,
+  .cl-otpCodeFieldInputs input {
+    color: white !important;
+    font-weight: 700 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+  }
+
+  /* Resend code link */
+  .cl-formResendCodeLink {
+    color: rgba(96, 165, 250, 1) !important;
+    font-weight: 700 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .cl-formResendCodeLink:hover {
+    color: rgba(147, 197, 253, 1) !important;
+    text-decoration: underline !important;
+    text-shadow: 0 0 12px rgba(96, 165, 250, 0.8) !important;
+  }
+
+  /* Email verification text */
+  .cl-verificationLinkStatusBox,
+  .cl-verificationLinkStatusBox * {
+    color: white !important;
+    font-weight: 600 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+  }
+
+  /* Loading text */
+  .cl-loadingButtonText {
+    color: white !important;
+    font-weight: 700 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+  }
+
+  /* Button text - ensure all buttons have white text */
+  .cl-button,
+  .cl-button *,
+  .cl-formButtonPrimary,
+  .cl-formButtonPrimary *,
+  .cl-socialButtonsBlockButton,
+  .cl-socialButtonsBlockButton * {
+    color: white !important;
+    font-weight: 700 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+  }
+
+  /* Links */
+  .cl-link,
+  .cl-internal-link {
+    color: rgba(96, 165, 250, 1) !important;
+    font-weight: 700 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .cl-link:hover,
+  .cl-internal-link:hover {
+    color: rgba(147, 197, 253, 1) !important;
+    text-decoration: underline !important;
+    text-shadow: 0 0 12px rgba(96, 165, 250, 0.8) !important;
+  }
+
+  /* Alternative action text (e.g., "Use another method") */
+  .cl-alternativeMethodsBlockButton,
+  .cl-alternativeMethodsBlockButton * {
+    color: white !important;
+    font-weight: 600 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+  }
+
+  /* Breadcrumbs and navigation */
+  .cl-breadcrumbs,
+  .cl-breadcrumbs *,
+  .cl-breadcrumbsItem,
+  .cl-breadcrumbsItemDivider {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 600 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+  }
+
+  /* Back button */
+  .cl-backButton,
+  .cl-backButton * {
+    color: rgba(96, 165, 250, 1) !important;
+    font-weight: 700 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+  }
+
+  /* Card content text */
+  .cl-cardContent,
+  .cl-cardContent * {
+    color: white !important;
+  }
+
+  /* Navbar text */
+  .cl-navbar,
+  .cl-navbar *,
+  .cl-navbarButton,
+  .cl-navbarButton * {
+    color: white !important;
+    font-weight: 600 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+  }
+
+  /* Profile section text */
+  .cl-profileSection,
+  .cl-profileSection *,
+  .cl-profileSectionTitle,
+  .cl-profileSectionContent {
+    color: white !important;
+    font-weight: 600 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+  }
+
+  /* User button text */
+  .cl-userButtonPopoverCard,
+  .cl-userButtonPopoverCard *,
+  .cl-userButtonPopoverActionButton,
+  .cl-userButtonPopoverActionButton * {
+    color: white !important;
+    font-weight: 600 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+  }
+
+  /* Menu items */
+  .cl-menuItem,
+  .cl-menuItem *,
+  .cl-menuButton,
+  .cl-menuButton * {
+    color: white !important;
+    font-weight: 600 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+  }
+
+  /* Accordion text */
+  .cl-accordionTriggerButton,
+  .cl-accordionTriggerButton *,
+  .cl-accordionContent,
+  .cl-accordionContent * {
+    color: white !important;
+    font-weight: 600 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+  }
+
+  /* Badge text */
+  .cl-badge,
+  .cl-badge * {
+    color: white !important;
+    font-weight: 700 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+  }
+
+  /* Avatar fallback text */
+  .cl-avatarBox,
+  .cl-avatarBox *,
+  .cl-userButtonAvatarBox,
+  .cl-userButtonAvatarBox * {
+    color: white !important;
+    font-weight: 700 !important;
+  }
+
+  /* Notification badge */
+  .cl-notificationBadge,
+  .cl-notificationBadge * {
+    color: white !important;
+    font-weight: 700 !important;
+  }
+
+  /* Form header action */
+  .cl-formHeaderAction,
+  .cl-formHeaderAction * {
+    color: rgba(96, 165, 250, 1) !important;
+    font-weight: 700 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+  }
+
+  /* Spinner/Loading indicator text */
+  .cl-spinner,
+  .cl-spinner * {
+    color: white !important;
+  }
+
+  /* Checkbox label */
+  .cl-formFieldLabelRow,
+  .cl-formFieldLabelRow * {
+    color: white !important;
+    font-weight: 600 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+  }
+
+  /* Radio button label */
+  .cl-radioLabel,
+  .cl-radioLabel * {
+    color: white !important;
+    font-weight: 600 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+  }
+
+  /* Select input text */
+  .cl-selectButton,
+  .cl-selectButton *,
+  .cl-selectOption,
+  .cl-selectOption * {
+    color: white !important;
+    font-weight: 600 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+  }
+
+  /* Tab text */
+  .cl-tabButton,
+  .cl-tabButton *,
+  .cl-tabPanel,
+  .cl-tabPanel * {
+    color: white !important;
+    font-weight: 600 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+  }
+
+  /* Fallback for any remaining text elements */
+  [class*="cl-"] {
+    color: white !important;
+  }
+
+  /* Ensure input placeholders are visible */
+  [class*="cl-"] input::placeholder,
+  [class*="cl-"] textarea::placeholder {
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  /* Ensure all paragraph and span elements are white */
+  [class*="cl-"] p,
+  [class*="cl-"] span,
+  [class*="cl-"] div,
+  [class*="cl-"] label,
+  [class*="cl-"] a {
+    color: white !important;
+  }
 }

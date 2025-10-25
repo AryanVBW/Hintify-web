@@ -142,7 +142,19 @@ export default function DesktopAuthPage() {
             appearance: {
               elements: {
                 rootBox: 'mx-auto',
-                card: 'bg-gray-900 border-gray-800'
+                card: 'backdrop-blur-3xl bg-gradient-to-br from-black/50 via-gray-900/40 to-black/50 border-2 border-white/25',
+                headerTitle: 'text-white font-bold',
+                headerSubtitle: 'text-gray-100',
+                socialButtonsBlockButton: 'text-white font-bold',
+                socialButtonsBlockButtonText: 'text-white font-bold',
+                formButtonPrimary: 'text-white font-bold',
+                formFieldInput: 'text-white',
+                formFieldLabel: 'text-white font-bold',
+                footerActionLink: 'text-blue-400 font-bold',
+                footerActionText: 'text-gray-100',
+                main: 'text-white',
+                alertText: 'text-white',
+                formFieldErrorText: 'text-red-400 font-bold',
               }
             }
           })

@@ -65,6 +65,11 @@ export default function SignInPage() {
                 formFieldSuccessText: 'text-green-400 font-bold drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]',
                 formFieldWarningText: 'text-yellow-400 font-bold drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]',
                 formFieldInfoText: 'text-blue-400 font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]',
+                formFieldHintText: 'text-gray-100 font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]',
+                verificationLinkStatusBox: 'text-white font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]',
+                main: 'text-white',
+                backButton: 'text-blue-400 font-bold hover:text-blue-300 hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]',
+                alternativeMethodsBlockButton: 'text-white font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]',
               }
             }}
             fallbackRedirectUrl={fromApp ? '/auth-success?source=app' : '/'}
