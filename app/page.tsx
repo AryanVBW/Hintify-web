@@ -7,6 +7,7 @@ import HintifyMagicBento from "@/components/HintifyMagicBento"
 import { Navbar } from "@/components/ui/navbar"
 import { DownloadButton } from "@/components/ui/download-button"
 import { InstallScriptButton } from "@/components/ui/install-script-button"
+import Link from "next/link"
 import {
   CheckCircle,
   ArrowRight,
@@ -473,12 +474,12 @@ export default function HomePage() {
               </div>
 
               <div className="flex flex-wrap justify-center lg:justify-end space-x-8">
-                <a href="/privacy" className="text-gray-400 hover:text-white transition-colors duration-300 text-sm">
+                <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors duration-300 text-sm">
                   Privacy Policy
-                </a>
-                <a href="/terms" className="text-gray-400 hover:text-white transition-colors duration-300 text-sm">
+                </Link>
+                <Link href="/terms" className="text-gray-400 hover:text-white transition-colors duration-300 text-sm">
                   Terms of Service
-                </a>
+                </Link>
               </div>
             </div>
           </div>
