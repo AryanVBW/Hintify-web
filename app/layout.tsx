@@ -4,7 +4,7 @@ import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
-import { AuthProvider } from "@/components/auth/AuthProvider"
+import { ClerkProvider } from '@clerk/nextjs'
 import { ConditionalFooter } from "@/components/ui/conditional-footer"
 import "./globals.css"
 
@@ -124,7 +124,7 @@ export default function RootLayout({
   }
 
   return (
-    <AuthProvider>
+    <ClerkProvider>
       <html lang="en">
         <head>
           <script
@@ -150,6 +150,6 @@ export default function RootLayout({
           <Analytics />
         </body>
       </html>
-    </AuthProvider>
+    </ClerkProvider>
   )
 }

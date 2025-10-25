@@ -1,5 +1,5 @@
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 import { NextResponse } from "next/server";
-import type { NextRequest } from 'next/server'
 
 // Define routes that should redirect to coming-soon
 const comingSoonRoutes = [
@@ -19,7 +19,19 @@ const comingSoonRoutes = [
   '/support',
 ];
 
-export function middleware(request: NextRequest) {
+// Define public routes that don't require authentication
+const isPublicRoute = createRouteMatcher([
+  '/',
+  '/sign-in(.*)',
+  '/sign-up(.*)',
+  '/auth/desktop(.*)',
+  '/auth-success(.*)',
+  '/coming-soon(.*)',
+  '/api/auth/desktop-token(.*)',
+  '/api/report-issue(.*)',
+])
+
+export default clerkMiddleware(async (auth, request) => {
   const { pathname } = request.nextUrl;
 
   // Redirect unbuilt routes to coming-soon
@@ -27,8 +39,13 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/coming-soon', request.url));
   }
 
+  // Protect routes that are not public
+  if (!isPublicRoute(request)) {
+    await auth.protect()
+  }
+
   return NextResponse.next();
-}
+})
 
 export const config = {
   matcher: [

@@ -9,6 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.34.0",
     "@emotion/is-prop-valid": "latest",
     "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^3.10.0",

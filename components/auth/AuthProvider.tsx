@@ -1,12 +1,11 @@
 'use client'
 
-import React, { createContext, useContext, useEffect, useState } from 'react'
-import { User, Session } from '@supabase/supabase-js'
-import { supabase } from '@/lib/supabase'
+import React, { createContext, useContext } from 'react'
+import { useUser, useClerk } from '@clerk/nextjs'
 
 interface AuthContextType {
-  user: User | null
-  session: Session | null
+  user: any | null
+  session: any | null
   loading: boolean
   signOut: () => Promise<void>
 }
@@ -31,50 +30,12 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null)
-  const [session, setSession] = useState<Session | null>(null)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    // Get initial session
-    const getInitialSession = async () => {
-      const { data: { session }, error } = await supabase.auth.getSession()
-      
-      if (error) {
-        console.error('Error getting initial session:', error)
-      } else {
-        setSession(session)
-        setUser(session?.user ?? null)
-      }
-      
-      setLoading(false)
-    }
-
-    getInitialSession()
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        console.log('Auth state changed:', event, session?.user?.email)
-        
-        setSession(session)
-        setUser(session?.user ?? null)
-        setLoading(false)
-      }
-    )
-
-    return () => {
-      subscription.unsubscribe()
-    }
-  }, [])
+  const { user, isLoaded } = useUser()
+  const { signOut: clerkSignOut } = useClerk()
 
   const handleSignOut = async () => {
     try {
-      const { error } = await supabase.auth.signOut()
-      if (error) {
-        console.error('Error signing out:', error)
-        throw error
-      }
+      await clerkSignOut()
     } catch (error) {
       console.error('Sign out error:', error)
       throw error
@@ -82,9 +43,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }
 
   const value: AuthContextType = {
-    user,
-    session,
-    loading,
+    user: user ? {
+      id: user.id,
+      email: user.primaryEmailAddress?.emailAddress || null,
+      user_metadata: {
+        full_name: user.fullName,
+        name: user.fullName,
+        given_name: user.firstName,
+        family_name: user.lastName,
+        avatar_url: user.imageUrl,
+        picture: user.imageUrl
+      }
+    } : null,
+    session: user ? { user } : null,
+    loading: !isLoaded,
     signOut: handleSignOut
   }
 
