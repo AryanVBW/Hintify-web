@@ -25,32 +25,43 @@ export default function AuthSuccessPage() {
   }, [isFromApp, router])
 
   const handleOpenApp = async () => {
-    if (!session?.access_token || !user) {
-      console.error('No access token or user data available')
+    if (!user) {
+      console.error('No user data available')
       return
     }
 
     try {
       setDeepLinkAttempted(true)
 
-      // Create user data object
-      const userData = {
-        id: user.id,
-        email: user.email,
-        name: user.user_metadata?.full_name || user.user_metadata?.name,
-        firstName: user.user_metadata?.given_name,
-        lastName: user.user_metadata?.family_name,
-        avatar: user.user_metadata?.avatar_url || user.user_metadata?.picture
+      // Fetch Clerk session token from API
+      console.log('🔑 Fetching Clerk session token...')
+      const response = await fetch('/api/auth/desktop-token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({})
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to retrieve session token')
       }
 
-      // Create deep link URL with authentication tokens and user data (consistent with sign-in page)
-      const token = session.access_token
-      const refreshToken = session.refresh_token
-      const deepLinkUrl = `hintify://auth?token=${encodeURIComponent(token)}&refresh_token=${encodeURIComponent(refreshToken || '')}&user=${encodeURIComponent(JSON.stringify(userData))}`
+      const data = await response.json()
 
-      console.log('🔗 Opening deep link with tokens and user data:', {
-        hasToken: !!token,
-        hasRefreshToken: !!refreshToken,
+      if (!data.success || !data.token) {
+        throw new Error(data.error || 'No access token available')
+      }
+
+      const accessToken = data.token
+      const userData = data.user
+
+      // Create deep link URL with Clerk authentication token
+      // Using hintify://auth/callback format for Clerk (without state since this is from website, not OAuth flow)
+      const deepLinkUrl = `hintify://auth/callback?token=${encodeURIComponent(accessToken)}&user=${encodeURIComponent(JSON.stringify(userData))}`
+
+      console.log('🔗 Opening deep link with Clerk token:', {
+        hasToken: !!accessToken,
         hasUserData: !!userData.id,
         userEmail: userData.email
       })
@@ -66,6 +77,7 @@ export default function AuthSuccessPage() {
     } catch (error) {
       console.error('❌ Error opening app:', error)
       setDeepLinkAttempted(false)
+      alert('Failed to open app. Please make sure Hintify is installed.')
     }
   }
 
