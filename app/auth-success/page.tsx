@@ -54,11 +54,19 @@ export default function AuthSuccessPage() {
       }
 
       const accessToken = data.token
+      const supabaseToken = data.supabaseToken
+      const sessionId = data.sessionId
       const userData = data.user
 
       // Create deep link URL with Clerk authentication token
       // Using hintify://auth/callback format for Clerk (without state since this is from website, not OAuth flow)
-      const deepLinkUrl = `hintify://auth/callback?token=${encodeURIComponent(accessToken)}&user=${encodeURIComponent(JSON.stringify(userData))}`
+      const deepLinkUrl = new URL('hintify://auth/callback')
+      deepLinkUrl.searchParams.set('token', accessToken)
+      if (supabaseToken) deepLinkUrl.searchParams.set('supabase_token', supabaseToken)
+      if (sessionId) deepLinkUrl.searchParams.set('session_id', sessionId)
+      deepLinkUrl.searchParams.set('user', JSON.stringify(userData))
+
+      const deepLinkString = deepLinkUrl.toString()
 
       console.log('🔗 Opening deep link with Clerk token:', {
         hasToken: !!accessToken,
@@ -67,7 +75,7 @@ export default function AuthSuccessPage() {
       })
 
       // Attempt to open the deep link
-      window.location.href = deepLinkUrl
+      window.location.href = deepLinkString
 
       // Show success message after a delay
       setTimeout(() => {

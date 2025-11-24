@@ -101,8 +101,16 @@ export async function POST(_request: NextRequest) {
     }
 
     // Get the session token
-    const { getToken } = await auth()
+    const { getToken, sessionId } = await auth()
     const token = await getToken()
+
+    // Try to get Supabase token if configured
+    let supabaseToken = null
+    try {
+      supabaseToken = await getToken({ template: 'supabase' })
+    } catch (e) {
+      console.log('No Supabase token template configured or error fetching it')
+    }
 
     if (!token) {
       return NextResponse.json(
@@ -131,6 +139,8 @@ export async function POST(_request: NextRequest) {
       {
         success: true,
         token: token,
+        supabaseToken: supabaseToken,
+        sessionId: sessionId,
         user: userData
       },
       {

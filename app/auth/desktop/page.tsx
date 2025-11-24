@@ -101,6 +101,7 @@ export default function DesktopAuthPage() {
   const [status, setStatus] = useState<'validating' | 'authenticating' | 'generating_token' | 'redirecting' | 'error' | 'success'>('validating')
   const [error, setError] = useState<string | null>(null)
   const [stateParam, setStateParam] = useState<string | null>(null)
+  const [callbackUrl, setCallbackUrl] = useState<string | null>(null)
 
   // Extract and validate state parameter on mount
   useEffect(() => {
@@ -187,26 +188,35 @@ export default function DesktopAuthPage() {
         }
 
         const accessToken = data.token
+        const supabaseToken = data.supabaseToken
+        const sessionId = data.sessionId
         const userData = data.user
 
         setStatus('redirecting')
 
         // Construct the custom URI scheme callback URL
         // SECURITY: State parameter is included for validation by desktop app
-        const callbackUrl = new URL('hintify://auth/callback')
-        callbackUrl.searchParams.set('token', accessToken)
-        callbackUrl.searchParams.set('state', stateParam)
-        callbackUrl.searchParams.set('user', JSON.stringify(userData))
+        const url = new URL('hintify://auth/callback')
+        url.searchParams.set('token', accessToken)
+        if (supabaseToken) url.searchParams.set('supabase_token', supabaseToken)
+        if (sessionId) url.searchParams.set('session_id', sessionId)
+        url.searchParams.set('state', stateParam)
+        url.searchParams.set('user', JSON.stringify(userData))
+
+        const urlString = url.toString()
+        setCallbackUrl(urlString)
 
         console.log('🔗 Redirecting to desktop app:', {
           hasToken: !!accessToken,
+          hasSupabaseToken: !!supabaseToken,
+          sessionId: sessionId,
           state: stateParam,
           userEmail: userData.email
         })
 
         // Redirect to desktop app via custom URI scheme
         // The Electron app will intercept this URL
-        window.location.href = callbackUrl.toString()
+        window.location.href = urlString
 
         setStatus('success')
 
@@ -287,9 +297,34 @@ export default function DesktopAuthPage() {
             <Alert className="bg-gray-800 border-gray-700">
               <ExternalLink className="h-4 w-4" />
               <AlertDescription className="text-gray-300">
-                If the app doesn't open automatically, make sure Hintify is installed and try clicking "Sign In" again from the desktop app.
+                If the app doesn't open automatically, click the button below.
               </AlertDescription>
             </Alert>
+
+            {callbackUrl && (
+              <div className="space-y-2">
+                <Button
+                  className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold"
+                  onClick={() => {
+                    window.location.href = callbackUrl
+                  }}
+                >
+                  Launch App
+                </Button>
+
+                <Button
+                  variant="secondary"
+                  className="w-full"
+                  onClick={() => {
+                    navigator.clipboard.writeText(callbackUrl)
+                    alert('Login link copied to clipboard! You can paste this into the app if needed.')
+                  }}
+                >
+                  Copy Login Link
+                </Button>
+              </div>
+            )}
+
             <Button
               variant="outline"
               className="w-full"
